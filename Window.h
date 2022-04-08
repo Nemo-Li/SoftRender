@@ -1,28 +1,32 @@
-//
-// Created by Nemo li on 2022/4/8.
-//
-
-#ifndef QTDEMO_WINDOW_H
-#define QTDEMO_WINDOW_H
-
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <QWidget>
 
-class Window : public QWidget{
+namespace Ui {
+    class Window;
+}
 
-    Q_OBJECT
+class QImage;
+class RenderThread;
+class Window : public QWidget
+{
+Q_OBJECT
+
 public:
     explicit Window(QWidget *parent = nullptr);
-
-    ~Window() override;
+    ~Window();
 
 private:
     void paintEvent(QPaintEvent *) override;
 
+protected slots:
+    void receiveFrame(unsigned char *image);
+
 private:
-    Window *ui;
+    Ui::Window *ui;
     QImage *canvas;
+    RenderThread *render;
 };
 
-
-#endif //QTDEMO_WINDOW_H
+#endif // WINDOW_H
