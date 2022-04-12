@@ -14,14 +14,21 @@ public:
 
     void stopIt() {stoped = true;}
 
+    void setFpsZero(){fps = 0;}
+
+    int getFps(){return fps;}
+
 signals:
-    void frameOut(unsigned char *image);
+    void frameOut(unsigned char *image, const unsigned int &num_triangles,
+                  const unsigned int &num_vertices);
 
 public slots:
     void loop();
 
 private:
     bool stoped;
+    int fps;
+    double deltaFrameTime;
     SoftRenderer::Pipeline *pipeline;
     int width, height, channel;
 };

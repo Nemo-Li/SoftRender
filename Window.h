@@ -8,6 +8,7 @@ class Window;
 }
 
 class QImage;
+class QTimer;
 class QThread;
 class RenderLoop;
 class RenderThread;
@@ -23,11 +24,16 @@ private:
     void paintEvent(QPaintEvent *) override;
 
 protected slots:
-    void receiveFrame(unsigned char *image);
+    void receiveFrame(unsigned char *image, const unsigned int &num_triangles,
+                      const unsigned int &num_vertices);
+
+    void fpsTimeOut();
 
 private:
     Ui::Window *ui;
+    QTimer *timer;
     QImage *canvas;
+    int num_trangles, num_vertices;
     QThread *loopThread;
     RenderLoop *loop;
 };

@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "ui_Window.h"
 
+#include <QTimer>
 #include <QThread>
 #include <QPainter>
 #include <QDebug>
@@ -15,11 +16,20 @@ Window::Window(QWidget *parent) :
     canvas = nullptr;
     loop = new RenderLoop(width(), height(), nullptr);
     loopThread = new QThread(this);
+
+    // fps counting.
+    timer = new QTimer();
+    connect(timer,&QTimer::timeout,this,&Window::fpsTimeOut);
+
+    // render thread.
     loop->moveToThread(loopThread);
     connect(loopThread,&QThread::finished,loop, &RenderLoop::deleteLater);
     connect(loopThread,&QThread::started,loop,&RenderLoop::loop);
     connect(loop,&RenderLoop::frameOut,this,&Window::receiveFrame);
+
+    // begin the thread.
     loopThread->start();
+    timer->start(1000);
 }
 
 Window::~Window()
@@ -46,9 +56,21 @@ void Window::paintEvent(QPaintEvent *event)
     QWidget::paintEvent(event);
 }
 
-void Window::receiveFrame(unsigned char *image)
+void Window::receiveFrame(unsigned char *image, const unsigned int &num_triangles,
+                          const unsigned int &num_vertices)
 {
     if(canvas) delete canvas;
     canvas = new QImage(image, width(), height(), QImage::Format_RGBA8888);
+    this->num_trangles = num_triangles;
+    this->num_vertices = num_vertices;
     update();
+}
+
+void Window::fpsTimeOut()
+{
+    int fps = loop->getFps();
+    loop->setFpsZero();
+    this->setWindowTitle("Soft Renderer By YangWC "
+                         + QString(" fps: %1 triangles: %2 vertices: %3")
+                         .arg(fps).arg(num_trangles).arg(num_vertices));
 }
