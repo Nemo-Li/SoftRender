@@ -4,14 +4,16 @@
 #include <QWidget>
 
 namespace Ui {
-    class Window;
+class Window;
 }
 
 class QImage;
+class QThread;
+class RenderLoop;
 class RenderThread;
 class Window : public QWidget
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit Window(QWidget *parent = nullptr);
@@ -26,7 +28,8 @@ protected slots:
 private:
     Ui::Window *ui;
     QImage *canvas;
-    RenderThread *render;
+    QThread *loopThread;
+    RenderLoop *loop;
 };
 
 #endif // WINDOW_H
