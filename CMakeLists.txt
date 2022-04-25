@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(QTDemo)
+project(SoftRender)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -18,5 +18,5 @@ aux_source_directory(${CMAKE_SOURCE_DIR}/SoftRenderer softRenderer)
 aux_source_directory(${CMAKE_SOURCE_DIR}/SoftRenderer/Math math)
 aux_source_directory(${CMAKE_SOURCE_DIR}/include include)
 
-add_executable(QTDemo ${include} ${math} ${root} ${softRenderer})
-target_link_libraries(QTDemo Qt5::Widgets)
+add_executable(SoftRender ${include} ${math} ${root} ${softRenderer})
+target_link_libraries(SoftRender Qt5::Widgets)

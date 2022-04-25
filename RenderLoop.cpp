@@ -29,7 +29,7 @@ void RenderLoop::loop()
     pipeline->initialize();
 
     // ObjModel
-    ObjModel diablo("./res/diablo3_pose.obj");
+    ObjModel diablo("../res/diablo3_pose.obj");
 
     // mesh
     Mesh cube, floor;
@@ -52,9 +52,9 @@ void RenderLoop::loop()
     fps = 0;
 
     // load textures.
-    unsigned int cubeUnit = pipeline->loadTexture("./res/marble.jpg");
-    unsigned int floorUnit = pipeline->loadTexture("./res/floor.jpg");
-    unsigned int diablo3 = pipeline->loadTexture("./res/diablo3_pose_diffuse.jpg");
+    unsigned int cubeUnit = pipeline->loadTexture("../res/marble.jpg");
+    unsigned int floorUnit = pipeline->loadTexture("../res/floor.jpg");
+    unsigned int diablo3 = pipeline->loadTexture("../res/diablo3_pose_diffuse.jpg");
 
     // render loop.
     while(!stoped)
@@ -73,13 +73,13 @@ void RenderLoop::loop()
 
             pipeline->bindTexture(cubeUnit);
             pipeline->setModelMatrix(cubes[0]);
-            pipeline->drawIndex(RenderMode::fill);
+            pipeline->drawIndex(RenderMode::wire);
 
             pipeline->setModelMatrix(cubes[1]);
-            pipeline->drawIndex(RenderMode::fill);
+            pipeline->drawIndex(RenderMode::wire);
 
             pipeline->setModelMatrix(cubes[2]);
-            pipeline->drawIndex(RenderMode::fill);
+            pipeline->drawIndex(RenderMode::wire);
 
             pipeline->unBindTexture(cubeUnit);
         }
@@ -90,7 +90,7 @@ void RenderLoop::loop()
             pipeline->setModelMatrix(rotat * diabloMatrix);
             pipeline->setVertexBuffer(&diablo.m_vertices);
             pipeline->setIndexBuffer(&diablo.m_indices);
-            pipeline->drawIndex(RenderMode::fill);
+            pipeline->drawIndex(RenderMode::wire);
             pipeline->unBindTexture(diablo3);
         }
 
@@ -100,7 +100,7 @@ void RenderLoop::loop()
             pipeline->setModelMatrix(floorM);
             pipeline->setVertexBuffer(&floor.m_vertices);
             pipeline->setIndexBuffer(&floor.m_indices);
-            pipeline->drawIndex(RenderMode::fill);
+            pipeline->drawIndex(RenderMode::wire);
             pipeline->unBindTexture(floorUnit);
         }
 
